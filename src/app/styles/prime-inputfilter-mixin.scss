@@ -4,6 +4,7 @@
     .p-select {
         width: $width-full !important;
         border: $input-border !important;
+        height: $height-input !important;
     }
 
     .p-select-overlay {
@@ -17,6 +18,8 @@
 
     .p-select-label {
         color: $color-inputlabel !important;
+        font-size: $fontSize-input !important;
+        
     }
 
     .p-select-list {
@@ -31,11 +34,10 @@
     .p-select-option {
         color: $color-black !important ;
     }
-    .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus {
+    .p-select-option:not(.p-select-option-selected):not(.p-disabled).p-focus, .p-select-option.p-select-option-selected.p-focus {
         background-color: $color-bg-selectOnFocus !important;;
         color: $color-text-selectOnFocus !important;
     }
-
      .p-select.p-select-open {
         box-shadow: $box-shadow !important;
         border: $border-onfocus !important;

@@ -29,12 +29,10 @@ import { DataLoaderComponent } from '../../data-loader/data-loader.component';
 import { MessageService } from 'primeng/api';
 import { Toast, ToastModule } from 'primeng/toast';
 import { ToastService } from '../../Services/toast.service';
-import { AwardedDateLessThanToday } from '../../Validators/AwardedDateLessThanToday.validator';
-import { StartDateLessThanToday } from '../../Validators/StartDateLessThanToday.validator';
-import { EndDateLessThanToday } from '../../Validators/EndDateLessThanToday.validator';
 import { StartDateWithEndDate } from '../../Validators/StartDateWithEndDate.validator';
 import { AwardedDateWithEndDateValidator } from '../../Validators/AwardedDateWithEndDate.validator';
 import { StartDateWithDOBValidator } from '../../Validators/StartDateWithDOB.validator';
+import { NotGreaterThanToday } from '../../Validators/NotGreaterThanToday.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -62,6 +60,7 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   disable = signal<boolean>(false);
   loading = signal<boolean>(false);
   dataLoaded = signal<boolean>(true);
+  customErrors : Record<string,string[]> = {};
 
   degreeType = signal<Record<string, string>[]>([
     { type: 'Doctoral' },
@@ -136,6 +135,8 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() visible: boolean = true;
   @Input() editData: any = {};
   @Output() onClose = new EventEmitter();
+  @Output() onCreate = new EventEmitter();
+  @Output() onUpdate = new EventEmitter();
 
   constructor(
     private fb: FormBuilder,
@@ -160,16 +161,16 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
       completion: new FormControl('', [Validators.required]),
       startdate: new FormControl('', [
         Validators.required,
-        StartDateLessThanToday,
-        StartDateWithEndDate,
+        NotGreaterThanToday,
         StartDateWithDOBValidator(dob),
       ]),
-      enddate: new FormControl('', [Validators.required, EndDateLessThanToday]),
+      enddate: new FormControl('', [Validators.required, NotGreaterThanToday]),
       awardeddate: new FormControl('', [
         Validators.required,
-        AwardedDateLessThanToday,
-        AwardedDateWithEndDateValidator,
+        NotGreaterThanToday
       ]),
+    }, {
+      validators : [StartDateWithEndDate, AwardedDateWithEndDateValidator]
     });
     // this.dynamicForm.get('expiry')?.setValidators([passportExpiry('dob')]);
     this.dynamicForm.get('completion')?.setValue(this.completionOptions()[1]);
@@ -179,19 +180,31 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadCustomValidators() {
-    if (this.dynamicForm) {
-      this.dynamicForm.get('enddate')?.valueChanges.subscribe((data) => {
-        this.dynamicForm?.get('startdate')?.touched
-          ? this.dynamicForm?.get('startdate')?.updateValueAndValidity()
-          : '';
+     this.customErrors['startdate'] = ['EndDateGreaterThanStartDate','MinimumGapBetweenEndDateStarDate']
+     this.customErrors['enddate'] = ['AwardedDateWithEndDateValidator']
 
-        this.dynamicForm?.get('awardeddate')?.touched
-          ? this.dynamicForm?.get('awardeddate')?.updateValueAndValidity()
-          : '';
-        const awardDate = this.dynamicForm?.get('awardeddate');
+
+    if (this.dynamicForm) {
+      // this.dynamicForm.get('enddate')?.valueChanges.subscribe((data) => {
+      //   // this.dynamicForm?.get('startdate')?.touched
+      //   //   ? this.dynamicForm?.get('startdate')?.updateValueAndValidity()
+      //   //   : '';
+
+      //   // this.dynamicForm?.get('awardeddate')?.touched
+      //   //   ? this.dynamicForm?.get('awardeddate')?.updateValueAndValidity()
+      //   //   : '';
+      //   const awardDate = this.dynamicForm?.get('awardeddate');
+      //   const completion = this.dynamicForm?.get('completion');
+      //   if (completion?.value.value == 'yes' && !awardDate?.value) {
+      //     awardDate?.setValue(data);
+      //   }
+      // });
+
+      this.dynamicForm.get('awardeddate')?.valueChanges.subscribe((data) => {
+        const endDate = this.dynamicForm?.get('enddate');
         const completion = this.dynamicForm?.get('completion');
-        if (completion?.value.value == 'yes' && !awardDate?.value) {
-          awardDate?.setValue(data);
+        if (completion?.value.value == 'yes' && !endDate?.value) {
+          endDate?.setValue(data);
         }
       });
 
@@ -204,30 +217,36 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
           this.dynamicForm?.get('awardeddate')?.clearValidators();
           this.dynamicForm?.get('awardeddate')?.updateValueAndValidity();
           this.dynamicForm?.get('awardeddate')?.setValue(new Date(1990, 0, 1));
+
+          this.dynamicForm?.hasValidator(AwardedDateWithEndDateValidator)
+          ? this.dynamicForm.removeValidators(AwardedDateWithEndDateValidator)
+          :'';
         } else {
           this.dynamicForm
             ?.get('enddate')
-            ?.addValidators([Validators.required, EndDateLessThanToday]);
+            ?.addValidators([Validators.required, NotGreaterThanToday]);
           this.dynamicForm
             ?.get('awardeddate')
             ?.addValidators([
               Validators.required,
-              AwardedDateLessThanToday,
-              AwardedDateWithEndDateValidator,
+              NotGreaterThanToday
             ]);
+
+            this.dynamicForm?.hasValidator(AwardedDateWithEndDateValidator)
+            ? ''
+            : this.dynamicForm?.addValidators(AwardedDateWithEndDateValidator);
+
           this.dynamicForm?.get('awardeddate')?.setValue(null);
           this.dynamicForm?.get('enddate')?.setValue(null);
 
-          const awardDate = this.dynamicForm?.get('awardeddate');
-          const endDate = this.dynamicForm?.get('enddate');
-          if (awardDate?.value && endDate?.value == null) {
-            console.log('assadadasd');
-
-            endDate?.setValue(awardDate.value);
-          }
+         
         }
       });
+
     }
+
+
+    
   }
 
   ngAfterViewInit(): void {
@@ -265,6 +284,11 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
       );
 
       this.loading.set(false);
+    }else {
+     this.editData && this.editData.Id 
+     ? this.onUpdate.emit(this.dynamicForm?.value)
+     : this.onCreate.emit(this.dynamicForm?.value);
+      this.onHide();
     }
   }
 

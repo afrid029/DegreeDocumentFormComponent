@@ -9,7 +9,7 @@
 
     .p-dialog{
         background-color: $color-white !important;
-        max-height: 92% !important;
+        max-height: 100% !important;
         border: transparent !important;
         box-shadow: $dialog-shadow !important;
     }
@@ -19,7 +19,7 @@
     }
 
     .p-dialog-content {
-        padding: 35px !important;
+        padding: $padding-form !important;
     }
 
     .p-dialog-content::-webkit-scrollbar {

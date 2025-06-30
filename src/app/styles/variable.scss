@@ -9,8 +9,8 @@ $color-inputtext-border : rgba(179, 179, 179, 0.419);
 $color-inputtext-shadow : rgb(31 112 217 / 32%);
 $color-requiredInput : rgba(255, 0, 0, 0.37);
 $color-error : #dc3545;
-$color-bg-selectOnFocus : rgba(5, 71, 118, 0.162);
-$color-text-selectOnFocus : rgb(50, 48, 48);
+$color-bg-selectOnFocus : #d0e1fd;
+$color-text-selectOnFocus : #4575ef;
 $color-mask-dialog : rgba(255, 255, 255, 0.21);
 $color-calendar-buttonOnHover : rgba(18, 43, 119, 0.062);
 $color-calendar-weekday : #b8b8b8;
@@ -22,12 +22,14 @@ $input-border : 1px solid rgba(179, 179, 179, 0.419);
 $border-onfocus : 1px solid $color-onfocus;
 $border-required : 1px solid $color-requiredInput;
 
-$fontSize-input : 14px;
+$fontSize-input : 0.8rem;
 $fontSize-error : 0.8em;
-$height-input : 6vh;
+$height-input : 2rem;
 
 $width-full : 100%;
 
 $backdrop-filter : blur(5px);
 
 $bottom-black-border : 1px solid rgba(0, 0, 0, 0.145);
+
+$padding-form : 0.8rem;

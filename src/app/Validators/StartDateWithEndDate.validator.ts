@@ -2,8 +2,8 @@ import { AbstractControl, ValidationErrors } from "@angular/forms";
 
 export function StartDateWithEndDate(control : AbstractControl) : ValidationErrors | null {
     const parent = control.parent;
-    const endDate  = parent?.get('enddate')?.value;
-    const startDate = control.value;
+    const endDate  = control?.get('enddate')?.value;
+    const startDate = control?.get('startdate')?.value;
 
     if(endDate && startDate ) {
         let inputStartDate = startDate;
@@ -18,9 +18,13 @@ export function StartDateWithEndDate(control : AbstractControl) : ValidationErro
             inputEndDate = new Date(parseInt(formatedDate[2]), parseInt(formatedDate[1])-1, parseInt(formatedDate[0]))
         }
        
+        inputEndDate.setHours(0,0,0,0);
+        inputStartDate.setHours(0,0,0,0);
         const diffInMs = inputEndDate.getTime() - inputStartDate.getTime()
 
         if(diffInMs < 0) {
+            console.log('dsdsads');
+            
             return ({
                 EndDateGreaterThanStartDate : 'Start Date should be less than End Date'
             })
@@ -30,7 +34,7 @@ export function StartDateWithEndDate(control : AbstractControl) : ValidationErro
 
         if(diffInDays < 1) {
             return ({
-                MinimumGapBetweenEndDateStarDate : 'The gap between End date and Start Date should for  Education is minimum 1 day'
+                MinimumGapBetweenEndDateStarDate : 'The gap between End date and Start Date for Education should be minimum 1 day'
             })
         }
 

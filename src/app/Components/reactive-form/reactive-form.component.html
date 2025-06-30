@@ -1,6 +1,6 @@
     <p-toast position="top-center"></p-toast>
 <p-dialog header="Degree Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
-    [style]="{ width: '65rem' }">
+    [style]="{ width: '55rem' }">
 
 
     <app-data-loader [dataLoaded]="dataLoaded()"></app-data-loader>
@@ -24,10 +24,10 @@
                     formControlName="studymode"></app-prime-dropdown>
                 <app-prime-dropdown class="col-12 col-md-6" label="Have you completed your degree?" placeHolder="Choose one" [optionItems]="completionOptions()" optionLabel="label"
                     formControlName="completion"></app-prime-dropdown>
-                <app-prime-datepicker class="col-12 col-md-6" label="Start Date" placeholder="Start Date"
+                <app-prime-datepicker class="col-12 col-md-6" [customErrors]="customErrors['startdate']" label="Start Date" placeholder="Start Date"
                     formControlName="startdate"></app-prime-datepicker>
                 @if(this.dynamicForm?.get('completion')?.value.value == 'yes') {
-                    <app-prime-datepicker class="col-12 col-md-6" label="End Date" placeholder="End Date"
+                    <app-prime-datepicker class="col-12 col-md-6" label="End Date" placeholder="End Date" [customErrors]="customErrors['enddate']"
                         formControlName="enddate"></app-prime-datepicker>
                     <app-prime-datepicker class="col-12 col-md-6" label="Date of Awarded" placeholder="Date of Awarded"
                         formControlName="awardeddate"></app-prime-datepicker>
