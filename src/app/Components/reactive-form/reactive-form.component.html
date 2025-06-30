@@ -27,9 +27,9 @@
                 <app-prime-datepicker class="col-12 col-md-6" [customErrors]="customErrors['startdate']" label="Start Date" placeholder="Start Date"
                     formControlName="startdate"></app-prime-datepicker>
                 @if(this.dynamicForm?.get('completion')?.value.value == 'yes') {
-                    <app-prime-datepicker class="col-12 col-md-6" label="End Date" placeholder="End Date" [customErrors]="customErrors['enddate']"
+                    <app-prime-datepicker class="col-12 col-md-6" label="End Date" placeholder="End Date"
                         formControlName="enddate"></app-prime-datepicker>
-                    <app-prime-datepicker class="col-12 col-md-6" label="Date of Awarded" placeholder="Date of Awarded"
+                    <app-prime-datepicker class="col-12 col-md-6" label="Date of Awarded" placeholder="Date of Awarded" [customErrors]="customErrors['awardeddate'] "
                         formControlName="awardeddate"></app-prime-datepicker>
                 }
             </div>

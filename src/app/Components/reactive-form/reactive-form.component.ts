@@ -181,7 +181,7 @@ export class ReactiveFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loadCustomValidators() {
      this.customErrors['startdate'] = ['EndDateGreaterThanStartDate','MinimumGapBetweenEndDateStarDate']
-     this.customErrors['enddate'] = ['AwardedDateWithEndDateValidator']
+     this.customErrors['awardeddate'] = ['AwardedDateWithEndDateValidator']
 
 
     if (this.dynamicForm) {
