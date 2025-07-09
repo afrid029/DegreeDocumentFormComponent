@@ -53,6 +53,10 @@ export class PrimeDatepickerComponent<T> extends CustomControlValueAccessorDirec
     }
     
    })
+
+   console.log(this.customErrors);
+   console.log(this.crossErrorMessages);
+   
   
     
     if (!this.control) return false;

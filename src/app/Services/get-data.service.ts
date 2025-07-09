@@ -1,5 +1,5 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -35,10 +35,11 @@ export class GetDataService {
     },
   ];
 
-  constructor(private http: HttpClient) {}
+  private _http : HttpClient = inject(HttpClient)
+
 
   getCountry(): Observable<any> {
-    return this.http.get('https://www.apicountries.com/countries');
+    return this._http.get('https://www.apicountries.com/countries');
   }
 
   getData() {

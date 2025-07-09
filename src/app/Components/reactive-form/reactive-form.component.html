@@ -1,13 +1,13 @@
 
-<p-dialog header="Degree Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
+<!-- <p-dialog header="Degree Document" [modal]="true" [(visible)]="visible" (onHide)="onHide()"
     [style]="{ width: '55rem' }">
-    <p-toast position="top-center"></p-toast>
+    <p-toast position="top-center"></p-toast> -->
 
     <app-data-loader [dataLoaded]="dataLoaded()"></app-data-loader>
 
     @if(dataLoaded()) {
 
-        <form class="container position-relative" [formGroup]="dynamicForm!" (ngSubmit)="onSubmit()">
+        <form class="container position-relative pb-4" [formGroup]="dynamicForm!" (ngSubmit)="onSubmit()">
     
             <div class="row row-cols-2 row-gap-3">
                 <app-prime-input  class="col-12 col-md-6" label="Name as per Degree" placeholder="Name as per Degree" [isDisabled]=false
@@ -28,8 +28,8 @@
                     formControlName="startdate"></app-prime-datepicker>
                 @if(this.dynamicForm?.get('completion')?.value.value == 'yes') {
                     <app-prime-datepicker class="col-12 col-md-6" label="End Date" placeholder="End Date"
-                        formControlName="enddate"></app-prime-datepicker>
-                    <app-prime-datepicker class="col-12 col-md-6" label="Date of Awarded" placeholder="Date of Awarded" [customErrors]="customErrors['awardeddate'] "
+                        formControlName="enddate" [customErrors]="customErrors['enddate']"></app-prime-datepicker>
+                    <app-prime-datepicker class="col-12 col-md-6" label="Date of Award" placeholder="Date of Award" [customErrors]="customErrors['awardeddate'] "
                         formControlName="awardeddate"></app-prime-datepicker>
                 }
             </div>
@@ -38,5 +38,5 @@
             </div>
         </form>
     }
-
-</p-dialog>
+<!-- 
+</p-dialog> -->

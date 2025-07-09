@@ -19,6 +19,7 @@ export class PrimeErrorComponent implements OnInit, OnChanges {
 
   errorMessages = signal<Record<string, string>>({});
   customErrorMessages: Record<string, string> | any = {};
+  error : string = '';
 
   ngOnInit(): void {
     this.setErrorMessages();
@@ -33,8 +34,15 @@ export class PrimeErrorComponent implements OnInit, OnChanges {
     
   }
 
-  get hasCrossErrors(): boolean {
-  return Object.keys(this.crossErrorMessages).length > 0;
+  hasCrossErrors(): boolean {
+     console.log(Object.values(this.crossErrorMessages)[0]);
+     if(Object.keys(this.crossErrorMessages).length > 0) {
+      this.error = Object.values(this.crossErrorMessages)[0] as string
+      return true;
+     }
+
+     return false;
+  
 }
 
 
@@ -49,12 +57,6 @@ export class PrimeErrorComponent implements OnInit, OnChanges {
       passwordDoesNotMatch: 'Passwords do not match.',
     };
 
-    // Object.keys(this.errors!).forEach((er) => {
-    //   const inc = Object.keys(baseErrorMessages).includes(er)
-    //   if(!inc) {
-    //     this.customErrorMessages[er]! = this.errors?.[er];
-    //   }
-    // })
   if(this.errors) {
       Object.keys(this.errors).forEach((er) => {
       const inc = Object.keys(baseErrorMessages).includes(er)
